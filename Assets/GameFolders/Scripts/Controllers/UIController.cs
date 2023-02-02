@@ -1,38 +1,37 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
-public class UIController : MonoSingleton<UIController>
+namespace GameFolders.Scripts.Controllers
 {
-    private EventData _eventData;
+    public class UIController : MonoSingleton<UIController>
+    {
+        private EventData _eventData;
 
 
-    [SerializeField] private Joystick joystick;
+        [SerializeField] private Joystick joystick;
     
-    [Header("Panels")]
-    [SerializeField] private GameObject victoryPanel;
-    [SerializeField] private GameObject losePanel;
+        [Header("Panels")]
+        [SerializeField] private GameObject victoryPanel;
+        [SerializeField] private GameObject losePanel;
     
-    [Header("Buttons")]
-    [SerializeField] Button nextLevelButton;
-    [SerializeField] Button tryAgainButton;
+        [Header("Buttons")]
+        [SerializeField] Button nextLevelButton;
+        [SerializeField] Button tryAgainButton;
 
-    private void Awake()
-    {
-        Singleton();
-        _eventData = Resources.Load("EventData") as EventData;
-    }
+        private void Awake()
+        {
+            Singleton();
+            _eventData = Resources.Load("EventData") as EventData;
+        }
 
-    public float GetHorizontal()
-    {
-        return joystick.Horizontal;
-    }
+        public float GetHorizontal()
+        {
+            return joystick.Horizontal;
+        }
 
-    public float GetVertical()
-    {
-        return joystick.Vertical;
+        public float GetVertical()
+        {
+            return joystick.Vertical;
+        }
     }
 }

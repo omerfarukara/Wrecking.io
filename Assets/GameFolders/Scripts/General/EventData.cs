@@ -8,4 +8,7 @@ public class EventData : ScriptableObject
 {
     public Action OnPlay;
     public Action<bool> OnFinish;
+
+    public Action<bool> OnSkillHandler;
+    public Action<bool> AIOnSkillHandler;
 }
