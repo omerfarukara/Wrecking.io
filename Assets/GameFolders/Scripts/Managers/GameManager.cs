@@ -67,10 +67,10 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void Start()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 0)
-        {
-            SceneManager.LoadScene(Level);
-        }
+        //if (SceneManager.GetActiveScene().buildIndex == 0)
+        //{
+        //    SceneManager.LoadScene(Level);
+        //}
     }
     
     private void OnDisable()

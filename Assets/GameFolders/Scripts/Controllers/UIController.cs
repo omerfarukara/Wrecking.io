@@ -9,6 +9,9 @@ public class UIController : MonoSingleton<UIController>
 {
     private EventData _eventData;
 
+
+    [SerializeField] private Joystick joystick;
+    
     [Header("Panels")]
     [SerializeField] private GameObject victoryPanel;
     [SerializeField] private GameObject losePanel;
@@ -23,15 +26,13 @@ public class UIController : MonoSingleton<UIController>
         _eventData = Resources.Load("EventData") as EventData;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public float GetHorizontal()
     {
-        
+        return joystick.Horizontal;
     }
 
-    // Update is called once per frame
-    void Update()
+    public float GetVertical()
     {
-        
+        return joystick.Vertical;
     }
 }
