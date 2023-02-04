@@ -13,7 +13,7 @@ namespace GameFolders.Scripts.Components.AI
         [SerializeField] private float speed, rotateSpeed;
         [SerializeField] private float distanceRange;
         [SerializeField] private float forcePower;
-        
+
         private Vector3 _targetPosition;
         private Rigidbody _rigidbody;
 
@@ -45,10 +45,11 @@ namespace GameFolders.Scripts.Components.AI
 
         private void FixedUpdate()
         {
+            if (!GameManager.Instance.Playability()) return;
+
             Vector3 direction = (_targetPosition - transform.position).normalized;
             _rigidbody.MovePosition(transform.position + transform.forward * speed * Time.fixedDeltaTime);
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction),
-                rotateSpeed * Time.fixedDeltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), rotateSpeed * Time.fixedDeltaTime);
         }
 
 

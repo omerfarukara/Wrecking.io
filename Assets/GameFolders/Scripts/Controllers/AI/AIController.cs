@@ -53,12 +53,26 @@ namespace GameFolders.Scripts.Controllers.AI
             Singleton();
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag(Constants.Tags.DEADAREA))
+            {
+                _eventData.OnFinish?.Invoke(true);
+            }
+
+            if (other.CompareTag(Constants.Tags.FIREOBJ))
+            {
+                _eventData.AIOnSkillHandler?.Invoke(true);
+
+                other.GetComponentInChildren<MeshExploder>().Explode();
+                other.gameObject.SetActive(false);
+            }
+        }
+
         private void OnCollisionEnter(Collision collision)
         {
             if (collision.collider.gameObject.CompareTag(Constants.Tags.PLAYER))
             {
-                Debug.Log("Collision");
-
                 var direction = (transform.position - collision.transform.position).normalized;
                 _rigidbody.AddForce(direction * collisionForce);
             }
@@ -66,8 +80,10 @@ namespace GameFolders.Scripts.Controllers.AI
 
         void Update()
         {
+            if (!GameManager.Instance.Playability()) return;
+
             #region OnGroundRaycast
-            
+
             RaycastHit onGroundHit;
             if (Physics.Raycast(transform.position, Vector3.down, out onGroundHit, onGroundHitDistance, layerMask))
             {
@@ -88,7 +104,7 @@ namespace GameFolders.Scripts.Controllers.AI
             if (Physics.Raycast(transform.position, Vector3.down, out ResetRotationHit, ResetRotationHitDistance, layerMask))
             {
                 Debug.DrawRay(transform.position, Vector3.down * ResetRotationHit.distance, Color.red);
-                if (_rigidbody.velocity.y < 0)
+                if (_rigidbody.velocity.y < -0.1f)
                 {
                     Debug.Log("Çalýþtý");
 

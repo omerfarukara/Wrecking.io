@@ -8,18 +8,19 @@ namespace GameFolders.Scripts.Controllers.Car
     {
         [SerializeField] private GameObject lineRope, lineBody;
         [SerializeField] private LayerMask layerMask;
-        [SerializeField] private float onGroundDistance;
+        [SerializeField] private float onGroundDistance, collisionForce;
         [SerializeField] private GameObject trailRenderer;
 
         private bool _onGround;
-        
+
         EventData _eventData;
+        Rigidbody _rigidbody;
 
         public bool OnGround
         {
             get => _onGround;
             set
-            { 
+            {
                 _onGround = value;
                 if (value)
                 {
@@ -29,12 +30,18 @@ namespace GameFolders.Scripts.Controllers.Car
                 {
                     trailRenderer.SetActive(false);
                 }
-            } 
+            }
         }
 
         private void Awake()
         {
             _eventData = Resources.Load("EventData") as EventData;
+            _rigidbody = GetComponent<Rigidbody>();
+        }
+
+        private void OnEnable()
+        {
+            _eventData.OnSkillHandler += LineControl;
         }
 
         private void Start()
@@ -42,15 +49,38 @@ namespace GameFolders.Scripts.Controllers.Car
             Singleton();
         }
 
-        private void OnEnable()
+        private void OnCollisionEnter(Collision collision)
         {
-            _eventData.OnSkillHandler += LineControl;
+            if (collision.collider.gameObject.CompareTag(Constants.Tags.AI))
+            {
+                var direction = (transform.position - collision.transform.position).normalized;
+                _rigidbody.AddForce(direction * collisionForce);
+            }
         }
-        
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag(Constants.Tags.DEADAREA))
+            {
+                Debug.Log("Collider");
+                _eventData.OnFinish?.Invoke(false);
+            }
+
+            if (other.CompareTag(Constants.Tags.FIREOBJ))
+            {
+                Debug.Log("asd");
+                _eventData.OnSkillHandler?.Invoke(true);
+                other.GetComponentInChildren<MeshExploder>().Explode();
+                other.gameObject.SetActive(false);
+            }
+        }
+
         void Update()
         {
+            if (!GameManager.Instance.Playability()) return;
+
             #region OnGroundRaycast
-            
+
             RaycastHit onGroundHit;
             if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out onGroundHit, onGroundDistance, layerMask))
             {
@@ -64,7 +94,6 @@ namespace GameFolders.Scripts.Controllers.Car
             }
 
             #endregion
-
         }
 
         private void OnDisable()
@@ -76,7 +105,7 @@ namespace GameFolders.Scripts.Controllers.Car
         {
             if (!statu)
             {
-                lineBody.transform.position = transform.position - Vector3.forward * 3.25f;
+                lineBody.transform.position = transform.position - Vector3.forward * -5.6f;
             }
             lineRope.SetActive(!statu);
             lineBody.SetActive(!statu);

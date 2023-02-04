@@ -1,5 +1,10 @@
 
 using UnityEngine;
+public enum GameType
+{
+    Normal,
+    Hole
+}
 
 public enum GameState
 {

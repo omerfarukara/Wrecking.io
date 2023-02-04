@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - DeadArea
+  - Missile
+  - FireObj
+  - Cube
+  - Obstacle
+  - Ai
   layers:
   - Default
   - TransparentFX

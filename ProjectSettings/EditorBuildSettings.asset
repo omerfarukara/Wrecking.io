@@ -4,5 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/GameFolders/Scenes/MainMenu.unity
+    guid: 24935b9d1e4ae4e1c8bdbcfac9f16644
+  - enabled: 1
+    path: Assets/GameFolders/Scenes/Level01.unity
+    guid: 51cbf7ab856094726b233cc80db6e855
+  - enabled: 1
+    path: Assets/GameFolders/Scenes/HoleScene.unity
+    guid: a6910622f0188b94795744ca606ae14f
   m_configObjects: {}

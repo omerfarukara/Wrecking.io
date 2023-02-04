@@ -10,7 +10,7 @@ public class Movement : MonoSingleton<Movement>
 {
     [SerializeField] float forwardSpeed;
     [SerializeField] float turnSpeed;
-    [SerializeField] private float maxVelocity;
+    [SerializeField] private float maxSpeed;
 
     Rigidbody _rigidbody;
 
@@ -40,16 +40,17 @@ public class Movement : MonoSingleton<Movement>
 
     private void FixedUpdate()
     {
-        if (_rigidbody.velocity.magnitude > maxVelocity) return;
-        
-        _rigidbody.AddRelativeForce(0,0,forwardSpeed);
-        
+        if (!GameManager.Instance.Playability()) return;
+
+        if (_rigidbody.velocity.magnitude < maxSpeed)
+        {
+            _rigidbody.AddRelativeForce(0, 0, forwardSpeed);
+        }
+
         if (!canRotate) return;
 
         Vector3 direction = Vector3.right * horizontal + Vector3.forward * vertical;
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction),
             turnSpeed * Time.fixedDeltaTime);
-
-        //_rigidbody.AddRelativeTorque(-direction*turnSpeed);
     }
 }
